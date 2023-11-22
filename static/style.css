@@ -1,0 +1,59 @@
+.judul{
+    margin-top: 60px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.gambar{
+    margin-top: 80px;
+}
+.content{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.label{
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+.label2{
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+.asal{
+    margin-bottom: 20px;
+}
+.tabel1{
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+}
+.tabel2{
+    margin-top: 50px;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+}
+button{
+    float: right;
+}
+.btn{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.rute_tempuh{
+    margin-left: 50px;
+    margin-top: 110px;
+}
+.total_jarak{
+    margin: 50px;
+}
+.navbar-brand{
+    margin-left: 40px;
+    color: white;
+}
+footer{
+    margin-top: 120px;
+}
