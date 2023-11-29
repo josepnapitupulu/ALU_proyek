@@ -1,53 +1,49 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import numpy as np
+from pso_algorithm import PSO
 
 app = Flask(__name__)
 
-def calculate_distance(point1, point2):
-    return np.linalg.norm(point1 - point2)
+koordinat_tempat_asal = {
+    "Asal_1": [5, 10],
+    "Asal_2": [5, 10],
+    "Asal_3": [5, 10],
+    "Asal_4": [5, 10],
+}
 
-def calculate_total_distance(path, points):
-    total_distance = 0
-    for i in range(len(path) - 1):
-        total_distance += calculate_distance(points[path[i]], points[path[i + 1]])
-    return total_distance
+koordinat_tempat_tujuan = {
+    "Kota_A": [20, 30],
+    "Kota_B": [40, 50],
+    "Kota_C": [60, 70],
+    "Kota_D": [80, 90],
+    "Kota_E": [5, 5],
+    "Kota_F": [39, 35],
+    "Kota_G": [20, 45],
+}
 
-def run_pso_algorithm(points, swarm_size, iterations):
-    num_points = len(points)
-    particles = np.random.permutation(num_points).tolist()
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        tempat_asal = list(koordinat_tempat_asal.keys())
+        tempat_tujuan = list(koordinat_tempat_tujuan.keys())
 
-    global_best = particles.copy()
-    global_best_distance = calculate_total_distance(global_best, points)
+        n_partikel = 50
+        n_iterasi = 100
+        batas_bawah = [0, 0]
+        batas_atas = [100, 100]
 
-    for _ in range(iterations):
-        for i in range(swarm_size):
-            new_particle = np.random.permutation(num_points).tolist()
+        solusi_terbaik, jarak_terbaik, tempat_terdekat = PSO(
+            n_partikel, n_iterasi, batas_bawah, batas_atas, tempat_asal,
+            koordinat_tempat_asal, tempat_tujuan, koordinat_tempat_tujuan
+        )
 
-            new_particle_distance = calculate_total_distance(new_particle, points)
 
-            if new_particle_distance < calculate_total_distance(particles[i], points):
-                particles[i] = new_particle.copy()
+        return render_template('index.html', solusi_terbaik=solusi_terbaik.tolist(),
+                               jarak_terbaik=jarak_terbaik, tempat_terdekat=tempat_terdekat)
 
-                if new_particle_distance < global_best_distance:
-                    global_best = new_particle.copy()
-                    global_best_distance = new_particle_distance
-
-    return global_best
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/run_pso', methods=['POST'])
-def run_pso():
-    data = request.get_json()
-    points = np.array(data['points'])
-    swarm_size = data['swarm_size']
-    iterations = data['iterations']
-
-    best_path = run_pso_algorithm(points, swarm_size, iterations)
-
-    return jsonify({'best_path': best_path.tolist()})
+    tempat_asal = list(koordinat_tempat_asal.keys())
+    tempat_tujuan = list(koordinat_tempat_tujuan.keys())
+    return render_template('index.html', tempat_asal=tempat_asal, tempat_tujuan=tempat_tujuan)
 
 if __name__ == '__main__':
     app.run(debug=True)
