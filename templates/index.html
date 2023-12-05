@@ -75,6 +75,18 @@
                             <h5>Rute Yang Ditempuh</h5>
                             <P>Berikut adalah jalur yang kamu harus tempuh</P>
                             <hr>
+                            <p> {% for kota in rute_terbaik %} {{ kota }} -> {% endfor %}</p>
+                        </div>
+                    </td>   
+                </tr>
+            </table>
+            <table border="1" class="tabel2">
+                <tr>
+                    <td width="10%">
+                        <div class="label2">
+                            <h5>Titik Koordinat dari rute yang akan dituju</h5>
+                            <P>Berikut Titik Koordinat dari lokasi yang akan kamu tempuh</P>
+                            <hr>
                             {% for kota in solusi_terbaik %}
                                 {{ kota }}{% if not loop.last %} -> {% endif %}
                             {% endfor %}
@@ -89,7 +101,7 @@
                             <h5>Total Jarak Yang Ditempuh</h5>
                             <P>Berikut adalah total jarak yang kamu harus tempuh</P>
                             <hr>
-                            {{ jarak_terbaik }} KM
+                            {{ total_jarak}} KM
                         </div>
                     </td>
                 </tr>
