@@ -33,10 +33,10 @@ koordinat_tempat_tujuan = {
         "Bonatua Lunasi": [2.525796, 99.115753],
     },
     "Borbor": {
-        "Borbor": [2.201029, 99.266624],
+        "Borbor": [2.201029, 95.266624],
     },
     "Habinsaran": {
-        "Habinsaran": [2.310248, 99.336949],
+        "Habinsaran": [2.310248, 95.336949],
     },
     "Laguboti": {
         "Laguboti": [2.3832665, 99.1486140],

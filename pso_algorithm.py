@@ -33,7 +33,7 @@ def PSO(n_partikel, n_iterasi, batas_bawah, batas_atas, koordinat_tempat_asal, k
     c1 = 1.5
     c2 = 1.5
     
-    rute_terbaik = []
+    rute_terbaik = [lokasi_asal]
 
     for iterasi in range(n_iterasi):
         fitness_partikel = np.array([hitung_jarak(pos, posisi_tempat_asal) for pos in posisi_partikel])
@@ -52,23 +52,22 @@ def PSO(n_partikel, n_iterasi, batas_bawah, batas_atas, koordinat_tempat_asal, k
             c2 * r2 * (gbest - posisi_partikel)
         )
 
-        # Perbaikan: Ambil kota-kota dari daerah yang dipilih
         daerah_dipilih = [tempat_asal[int(index)] for index in gbest if 0 <= int(index) < len(tempat_asal)]
         kota_dari_daerah_dipilih = []
         for daerah in daerah_dipilih:
             if isinstance(daerah, str):
-                # Perbaikan: Handle jika daerah adalah string (bukan dictionary)
                 kota_dari_daerah_dipilih.append(daerah)
             else:
                 kota_dari_daerah_dipilih.extend(daerah['kota'])
             
         jumlah_kota_yang_diambil = min(len(kota_dari_daerah_dipilih), 3)
         kota_yang_diambil = np.random.choice(kota_dari_daerah_dipilih, jumlah_kota_yang_diambil, replace=False)
-
-        # Perbaikan: Update rute_terbaik pada setiap iterasi
-        rute_terbaik = [lokasi_asal] + [list(koordinat_tempat_asal[lokasi_asal].keys())[0]]
-        for kota_index in kota_yang_diambil:
-            rute_terbaik.extend([kota_index] if isinstance(kota_index, str) else tempat_asal[kota_index]['kota'])
+        
+        rute_terbaik.extend(kota_yang_diambil) 
+        rute_terbaik.extend([list(koordinat_tempat_tujuan[lokasi_tujuan].keys())[0]]) 
+        # rute_terbaik = [lokasi_asal] + [list(koordinat_tempat_asal[lokasi_asal].keys())[0]]
+        # for kota_index in kota_yang_diambil:
+        #     rute_terbaik.extend([kota_index] if isinstance(kota_index, str) else tempat_asal[kota_index]['kota'])
 
         # Perbaikan: Hentikan iterasi jika kota tujuan sudah tercapai
         if lokasi_tujuan in rute_terbaik:
@@ -79,8 +78,13 @@ def PSO(n_partikel, n_iterasi, batas_bawah, batas_atas, koordinat_tempat_asal, k
 
     tempat_terdekat_index = np.argmin([hitung_jarak(gbest, koordinat_tempat_tujuan[tempat][list(koordinat_tempat_tujuan[tempat].keys())[0]]) for tempat in tempat_tujuan])
     tempat_terdekat = tempat_tujuan[tempat_terdekat_index]
-
+    
     total_jarak = hitung_jarak(gbest, koordinat_tempat_tujuan[tempat_terdekat][list(koordinat_tempat_tujuan[tempat_terdekat].keys())[0]])
+    
+    # faktor_konversi = 111 
+    # total_jarak_km = total_jarak * faktor_konversi
+    
+    # total_jarak_formatted = "{:.2f}".format(total_jarak_km)
 
     return gbest, total_jarak, tempat_terdekat, rute_terbaik
 
